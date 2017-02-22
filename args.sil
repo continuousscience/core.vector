@@ -1,0 +1,11 @@
+-- Number of args for each primitive.
+add = 2
+mul = 2
+sub = 2
+divide = 2
+zeros = 1
+range = 2
+fromList = 1
+toList = 1
+getElem = 2
+setElem = 2

@@ -1,0 +1,18 @@
+-- Prototypes for included primitive functions
+
+add = binop
+mul = binop
+sub = binop
+divide = binop
+
+zeros = fun Int n -> Vector
+
+range = fun Int a, Int b -> Vector
+
+fromList = fun List(Float) l -> Vector
+
+toList = fun Vector v -> List(Float)
+
+getElem = fun Vector v, Int i -> Float
+
+setElem = fun Int i, Float x -> ST(Vector, Nil)
