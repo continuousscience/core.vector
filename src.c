@@ -81,11 +81,20 @@ int range(sil_State *S) {
         return sil_err(S, "range requires 2 int args");
     int i = sil_tointeger(S, 1);
     int j = sil_tointeger(S, 2);
-    int n = 0;
-    vector *v = (vector *)malloc(sizeof(vector)+8*(j-i));
-    v->n = j-i;
-    for(; i<j; i++,n++) {
-        v->x[n] = i;
+    int n = 0, m = i <= j ? j - i : i - j;
+    if(m > 10000000) {
+        return sil_err(S, "range exceeds 10M elements");
+    }
+    vector *v = (vector *)malloc(sizeof(vector)+8*m);
+    v->n = m;
+    if(i <= j) {
+        for(; i<j; i++,n++) {
+            v->x[n] = i;
+        }
+    } else {
+        for(; i>j; i--,n++) {
+            v->x[n] = i;
+        }
     }
     sil_settop(S, 0);
     sil_pushvector(S, v);
@@ -131,6 +140,7 @@ int getElem(sil_State *S) {
         return sil_err(S, "Invalid argument");
     }
     i = sil_tointeger(S, 2);
+    sil_remove(S, 2);
     if(i < 0) i += v->n;
     if(i < 0 || i >= v->n) {
         return sil_err(S, "Invalid index");
