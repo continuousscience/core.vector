@@ -1,1 +1,1 @@
-ok = delay test_prim(vector)
+ok = lazy test_prim(vector)

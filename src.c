@@ -133,7 +133,7 @@ int toList(sil_State *S) {
 }
 
 // Vector -> Int -> Float
-int getElem(sil_State *S) {
+int elem(sil_State *S) {
     int i;
     const vector *v = (vector *)sil_topointer(S, 1);
     if(v == NULL) {
@@ -167,3 +167,26 @@ int setElem(sil_State *S) {
     sil_pushnil(S);
     return 0;
 }
+
+// (Int -> Float) -> Int -> Vector
+int fromFunction(sil_State *S) {
+    int i, n = sil_tointeger(S, 2);
+    if(n < 0 || n > 10000000) {
+        return sil_err(S, "invalid length");
+    }
+    vector *v = (vector *)malloc(sizeof(vector)+8*n);
+    v->n = n;
+
+    sil_remove(S, 2);
+    for(i=0; i<n; i++) {
+        sil_pushvalue(S, 1); // copy function
+        sil_pushinteger(S, i); // push arg
+        sil_call(S, 2);
+        v->x[i] = sil_todouble(S, 2);
+        sil_remove(S, 2); // clear result
+    }
+    sil_remove(S, 1); // remove function
+    sil_pushvector(S, v);
+    return 0;
+}
+

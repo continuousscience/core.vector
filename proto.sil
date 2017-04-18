@@ -11,8 +11,10 @@ range = fun Int a, Int b -> Vector
 
 fromList = fun List(Float) l -> Vector
 
+fromFunction = fun (fun Int i -> Float) f, Int n -> Vector
+
 toList = fun Vector v -> List(Float)
 
-getElem = fun Vector v, Int i -> Float
+elem = fun Vector v, Int i -> Float
 
 setElem = fun Int i, Float x -> ST(Vector, Nil)
