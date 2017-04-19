@@ -123,11 +123,10 @@ int toList(sil_State *S) {
     if(v == NULL) {
         return sil_err(S, "Invalid argument");
     }
-    sil_pushnil(S); // empty list
-    for(i=v->n-1; i>=0; i--) { // add in reverse order
+    for(i=0; i<v->n; i++) {
         sil_pushdouble(S, v->x[i]);
-        sil_pushcons(S);
     }
+    sil_setcons(S, v->n);
     sil_remove(S, 1); // clear vector
     return 0;
 }
