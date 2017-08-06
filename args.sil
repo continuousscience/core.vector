@@ -9,4 +9,5 @@ fromList = 1
 fromFunction = 2
 toList = 1
 setElem = 2
+updateElem = 2
 elem = 2

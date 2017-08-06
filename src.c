@@ -149,7 +149,7 @@ int elem(sil_State *S) {
     return 0;
 }
 
-// Int -> Float -> ST(Vector, Nil)
+// Int -> Float -> ST(Vector, Float)
 int setElem(sil_State *S) {
     size_t len; // Always assume len is wrong!
     vector *v = (vector *)sil_getST(S, &len);
@@ -161,9 +161,30 @@ int setElem(sil_State *S) {
     if(i < 0 || i >= v->n) {
         return sil_err(S, "Invalid index");
     }
+    double prev = v->x[i];
     v->x[i] = sil_todouble(S, 2);
     sil_settop(S, 0);
-    sil_pushnil(S);
+    sil_pushdouble(S, prev);
+    return 0;
+}
+
+// updateElem = fun Int i, (fun Float x -> Float) -> ST(Vector, Float)
+int updateElem(sil_State *S) {
+    size_t len; // Always assume len is wrong!
+    vector *v = (vector *)sil_getST(S, &len);
+    if(v == NULL) {
+        return sil_err(S, "Can't update - no vector present");
+    }
+    int i = sil_tointeger(S, 1);
+    if(i < 0) i += v->n;
+    if(i < 0 || i >= v->n) {
+        return sil_err(S, "Invalid index");
+    }
+    sil_pushdouble(S, v->x[i]);
+    sil_call(S, 2);
+    v->x[i] = sil_todouble(S, 2);
+    sil_settop(S, 0);
+    sil_pushdouble(S, v->x[i]);
     return 0;
 }
 

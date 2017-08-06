@@ -17,4 +17,7 @@ toList = fun Vector v -> List(Float)
 
 elem = fun Vector v, Int i -> Float
 
-setElem = fun Int i, Float x -> ST(Vector, Nil)
+setElem = fun Int i, Float x -> ST(Vector, Float)
+
+updateElem = fun Int i, (fun Float x -> Float) f -> ST(Vector, Float)
+
